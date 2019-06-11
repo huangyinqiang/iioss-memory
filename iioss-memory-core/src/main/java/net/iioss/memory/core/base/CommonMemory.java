@@ -26,12 +26,14 @@ import java.util.stream.Collectors;
 public interface CommonMemory extends Memory {
     Logger log = LoggerFactory.getLogger(CommonMemory.class);
 
+
     /**
      * 根据key获取内存中的字节流数组
      * @param key　对应的key
      * @return 　　内存中的值
      */
     byte[] getBytes(String key);
+
 
     /**
      * 根据key获取内存中多个字节流数组
@@ -40,6 +42,7 @@ public interface CommonMemory extends Memory {
      */
     Collection<byte[]> getBytes(String ... keys);
 
+
     /**
      * 给内存中设置值
      * @param key　　key
@@ -47,11 +50,13 @@ public interface CommonMemory extends Memory {
      */
     void setBytes(String key, byte[] value);
 
+
     /**
      * 给内存中一次性设置多个值
      * @param memoryData key为内存中的key，值为内存中的值
      */
     void setBytes(Map<String,byte[]> memoryData);
+
 
     /**
      * 给内存中设置带生命周期的值
@@ -63,6 +68,7 @@ public interface CommonMemory extends Memory {
         setBytes(key, value);
     }
 
+
     /**
      * 给内存中一次性设置多个带生命周期的值
      * @param objectMap　　　值
@@ -71,6 +77,7 @@ public interface CommonMemory extends Memory {
     default void setBytes(Map<String,byte[]> objectMap, long timeToLiveSeconds) {
         setBytes(objectMap);
     }
+
 
     @Override
     default Object get(String key) {
@@ -114,8 +121,7 @@ public interface CommonMemory extends Memory {
     @Override
     default void put(Map<String, Object> memoryData) {
         if(MapUtil.isNotEmpty(memoryData)){
-            setBytes(memoryData.entrySet()
-                    .parallelStream()
+            setBytes(memoryData.entrySet().parallelStream()
                     .collect(Collectors.toMap(
                             Map.Entry::getKey, p->SerializationAdapter.serialize(p.getValue()))));
         }
@@ -136,7 +142,7 @@ public interface CommonMemory extends Memory {
 
     /**
      * 是否支持内存数据生命周期设置
-     * @return
+     * @return 默认是不支持
      */
     default boolean isSupportTimeToLiveSeconds() {
         return false;

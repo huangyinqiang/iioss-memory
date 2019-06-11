@@ -9,6 +9,7 @@ package net.iioss.memory.core.base;
  */
 public interface ProcessMemory extends Memory {
 
+
     /**
      * 内存最大元素个数：MaxEntriesLocalHeap
      * @return 内存最大元素个数
