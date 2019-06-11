@@ -14,15 +14,15 @@ public enum SerializerType {
     /**
     * fst序列化方案
     * */
-    FST("fst","net.iioss.memory.serializer.FSTSerializer"),
+    FST("fst","net.iioss.memory.core.serializer.FSTSerializer"),
     /**
      * fastjson序列化方案
      */
-    FASTJSON("fastjson","net.iioss.memory.serializer.FastjsonSerializer"),
+    FASTJSON("fastjson","net.iioss.memory.core.serializer.FastjsonSerializer"),
     /**
      * java原生的序列化方案
      */
-    JAVA("java","net.iioss.memory.serializer.JavaSerializer");
+    JAVA("java","net.iioss.memory.core.serializer.JavaSerializer");
 
 
 

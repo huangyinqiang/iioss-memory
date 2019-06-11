@@ -55,6 +55,11 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
     protected abstract void senddeleteCmd(String nameSpace, String...keys);
 
 
+    public MemoryObject get(String nameSpace, String key)  {
+        return get(nameSpace, key,true);
+    }
+
+
     /**
      * 获取内存中的数据
      * @param nameSpace　名称空间
@@ -104,12 +109,12 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      * @param keys　　　　　keys
      * @return 内存数据对象集合　
      */
-    public Map<String, MemoryObject> get(String nameSpace, String... keys)  {
+    public Map<String, MemoryObject> get(String nameSpace, Collection<String> keys)  {
         if(closed)
             throw new IllegalStateException("内存操作类已经关闭");
 
         //进程内存数据
-        final Map<String, Object> objectMap = admin.getProcessMemory(nameSpace).get(keys);
+        final Map<String, Object> objectMap = admin.getProcessMemory(nameSpace).get((String[]) keys.toArray());
         Map<String, MemoryObject> results = objectMap.entrySet().stream().filter(p -> p.getValue() != null).collect(
                 Collectors.toMap(
                         Map.Entry::getKey,
@@ -117,7 +122,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
                 )
         );
         //进程外内存数据
-        Map<String, Object> commonDataMap = admin.getCommonMemory(nameSpace).get(CollectionUtil.newArrayList(keys).stream().filter(k -> !objectMap.containsKey(k) || objectMap.get(k) == null).toArray(String[]::new));
+        Map<String, Object> commonDataMap = admin.getCommonMemory(nameSpace).get(keys.stream().filter(k -> !objectMap.containsKey(k) || objectMap.get(k) == null).toArray(String[]::new));
         commonDataMap.forEach((k,v) -> {
             results.put(k, new MemoryObject(nameSpace, k, Type.COMMON_MEMORY, v));
             if (v != null)

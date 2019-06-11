@@ -1,6 +1,7 @@
 package net.iioss.memory.core.cluster;
 
 import net.iioss.memory.core.MemoryAdmin;
+import net.iioss.memory.core.constant.BroadcastType;
 import net.iioss.memory.core.impl.redis.RedisCommonMemorySupport;
 import net.sf.ehcache.CacheException;
 
@@ -15,9 +16,9 @@ public class ClusterFactory {
 
     public final static Cluster init(MemoryAdmin holder, String broadcast, Map<String, String> configMap) {
         Cluster cluster;
-        if ("lettuce".equalsIgnoreCase(broadcast))
-            cluster = ClusterFactory.lettuce(configMap, holder);
-        else if ("none".equalsIgnoreCase(broadcast))
+        if (BroadcastType.REDIS.getName().equalsIgnoreCase(broadcast))
+            cluster = ClusterFactory.redis(configMap, holder);
+        else if (BroadcastType.NONE.getName().equalsIgnoreCase(broadcast))
             cluster = new NoneCluster();
         else
             cluster = ClusterFactory.custom(broadcast, configMap, holder);
@@ -25,7 +26,7 @@ public class ClusterFactory {
     }
 
 
-    private final static Cluster lettuce( Map<String, String> configMap, MemoryAdmin holder) {
+    private final static Cluster redis( Map<String, String> configMap, MemoryAdmin holder) {
         RedisCommonMemorySupport policy = new RedisCommonMemorySupport();
         policy.connect(configMap, holder);
         return policy;

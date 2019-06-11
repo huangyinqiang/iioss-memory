@@ -102,7 +102,7 @@ public class EhCacheSupport  implements MemorySupport {
         if (manager == null) {
             // 指定了配置文件路径? 加载之
             if (configMap.containsKey(CONFIGLOCATION)) {
-                URL url = getClass().getClassLoader().getResource((String) configMap.get(CONFIGLOCATION));
+                URL url = getClass().getClassLoader().getResource( configMap.get(CONFIGLOCATION));
                 manager = CacheManager.newInstance(url);
             } else {
                 // 加载默认实例

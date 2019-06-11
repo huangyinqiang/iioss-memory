@@ -35,7 +35,7 @@ public class SerializationAdapter {
         Class<?> serializerClass=null;
         try {
             serializerClass= ObjectUtil.isNotEmpty(serializerType)?
-                    ClassUtil.loadClass(serializerType.getClassName()):ClassUtil.loadClass(serializerType.getClassName());
+                    ClassUtil.loadClass(serializerType.getClassName()):ClassUtil.loadClass(serializerProgramme);
             serializer = (Serializer) serializerClass.newInstance();
         } catch (Exception e) {
             throw new SerializerException(StrUtil.format("加载序列化类失败 -> [方案名：{}，class: {}]", serializerProgramme,serializerClass),e);

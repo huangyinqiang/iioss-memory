@@ -1,8 +1,11 @@
 package net.iioss.memory.core;
 
 import cn.hutool.core.util.ObjectUtil;
+import net.iioss.memory.core.bean.MemoryObject;
 import net.iioss.memory.core.config.Config;
 import net.iioss.memory.core.exception.MemoryException;
+
+import java.util.Map;
 
 /**
  * @author HuangYinQiang
@@ -46,6 +49,16 @@ public class IIOSSMemory {
         if (ObjectUtil.isNull(builder))
             throw new MemoryException("尚未建立内存频道");
         builder.close();
+    }
+
+
+    public static void main(String[] args) {
+        MemoryChannel channel = IIOSSMemory.getChannel();
+        String namespace = "Users";
+        channel.put(namespace, "name", "黄银强");
+        MemoryObject name1 = channel.get(namespace, "name");
+        System.out.println(name1);
+
     }
 
 

@@ -1,6 +1,7 @@
 package net.iioss.memory.core.config;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Singleton;
 import cn.hutool.setting.Setting;
 import lombok.Data;
@@ -32,7 +33,7 @@ public class Config {
     /**
      * 项目中加载解析的配置文件的各个bean
      */
-    private Map<Type,ConfigEntry> fileConfig;
+    private Map<Type,ConfigEntry> fileConfig=CollectionUtil.newHashMap();
 
 
 

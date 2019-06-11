@@ -19,9 +19,11 @@ public interface Serializer {
      * @return
      */
     default String name() {
+
+
         return Objects.requireNonNull(SerializerType.
                 getSerializerTypeByClassName(
-                        ClassUtil.getClassName(this, true)))
+                        ClassUtil.getClassName(this, false)))
                 .getName();
     }
 

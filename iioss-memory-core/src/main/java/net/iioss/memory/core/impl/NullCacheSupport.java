@@ -8,6 +8,7 @@ import net.iioss.memory.core.constant.MemoryLevel;
 import net.iioss.memory.core.constant.MemoryType;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -44,7 +45,7 @@ public class NullCacheSupport  implements MemorySupport {
     }
 
     @Override
-    public void start(Properties props) {
+    public void start(Map<String, String> configMap) {
 
     }
 

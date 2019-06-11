@@ -44,13 +44,13 @@
                 <groupId>net.sf.ehcache</groupId>
                 <artifactId>ehcache</artifactId>
                 <version>${ehcache.version}</version>
-                <scope>provided</scope>
+            <!--    <scope>provided</scope>-->
             </dependency>
             <dependency>
                 <groupId>io.lettuce</groupId>
                 <artifactId>lettuce-core</artifactId>
                 <version>${lettuce.version}</version>
-                <scope>provided</scope>
+               <!-- <scope>provided</scope>-->
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -80,7 +80,7 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-pool2</artifactId>
                 <version>2.5.0</version>
-                <scope>provided</scope>
+              <!--  <scope>provided</scope>-->
             </dependency>
         </dependencies>
     </dependencyManagement>

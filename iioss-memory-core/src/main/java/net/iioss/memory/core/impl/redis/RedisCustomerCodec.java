@@ -4,9 +4,6 @@ import io.lettuce.core.codec.RedisCodec;
 
 import java.nio.ByteBuffer;
 
-/**
- * 使用字节编码
- */
 public class RedisCustomerCodec implements RedisCodec<String, byte[]> {
 
     private static final byte[] EMPTY = new byte[0];

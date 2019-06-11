@@ -26,6 +26,7 @@ import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
 import io.lettuce.core.pubsub.api.sync.RedisPubSubCommands;
 import io.lettuce.core.support.ConnectionPoolSupport;
 import net.iioss.memory.core.MemoryAdmin;
+import net.iioss.memory.core.constant.MemoryType;
 import net.iioss.memory.core.definition.CommonMemory;
 import net.iioss.memory.core.definition.Memory;
 import net.iioss.memory.core.definition.MemorySupport;
@@ -62,25 +63,20 @@ import static net.iioss.memory.core.constant.NameDefinition.PROJECT_NAME;
  */
 public class RedisCommonMemorySupport extends RedisPubSubAdapter<String, String> implements MemorySupport, Cluster {
 
-    private int LOCAL_COMMAND_ID = Command.genRandomSrc(); //命令源标识，随机生成，每个节点都有唯一标识
-
+    private int LOCAL_COMMAND_ID = Command.genRandomSrc();
     private static final RedisCustomerCodec codec = new RedisCustomerCodec();
-
     private static AbstractRedisClient redisClient;
     GenericObjectPool<StatefulConnection<String, byte[]>> pool;
     private StatefulRedisPubSubConnection<String, String> pubsub_subscriber;
     private String storage;
-
     private MemoryAdmin holder;
-
     private String channel;
     private String namespace;
-
     private final ConcurrentHashMap<String, CommonMemory> regions = new ConcurrentHashMap();
 
     @Override
     public String getName() {
-        return "lettuce";
+        return MemoryType.REDIS.getName();
     }
 
     @Override
@@ -99,8 +95,9 @@ public class RedisCommonMemorySupport extends RedisPubSubAdapter<String, String>
         this.storage = StrUtil.emptyToDefault(configMap.get("storage"),"hash");
         this.channel = StrUtil.emptyToDefault(configMap.get("channel"),PROJECT_NAME);
 
+        //redis集群方式
         String scheme = StrUtil.emptyToDefault(configMap.get("scheme"), "redis");
-        String hosts = StrUtil.emptyToDefault(configMap.get("hosts"), "127.0.0.1:6379");
+        String hosts = StrUtil.emptyToDefault(configMap.get("hosts"),"127.0.0.1:6379");
         String password = configMap.get("password");
         int database = Integer.parseInt(StrUtil.emptyToDefault(configMap.get("database"), "0"));
         String sentinelMasterId = configMap.get("sentinelMasterId");
