@@ -1,4 +1,4 @@
-package net.iioss.memory.core.base;
+package net.iioss.memory.core.definition;
 
 import java.util.Collection;
 import java.util.Map;

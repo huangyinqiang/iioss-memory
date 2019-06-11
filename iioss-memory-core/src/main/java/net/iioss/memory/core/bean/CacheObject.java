@@ -2,7 +2,7 @@ package net.iioss.memory.core.bean;
 
 import lombok.*;
 import lombok.experimental.Accessors;
-import net.iioss.memory.core.definition.MemoryLevel;
+import net.iioss.memory.core.constant.MemoryLevel;
 
 /**
  * @Title 缓存对象

@@ -2,7 +2,7 @@ package net.iioss.memory.core.cluster;
 
 
 import net.iioss.memory.core.MemoryAdmin;
-import net.iioss.memory.core.definition.Command;
+import net.iioss.memory.core.constant.Command;
 
 import java.util.Properties;
 

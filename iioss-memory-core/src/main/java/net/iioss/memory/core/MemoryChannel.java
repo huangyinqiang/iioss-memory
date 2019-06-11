@@ -1,17 +1,16 @@
 package net.iioss.memory.core;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.util.ObjectUtil;
 import lombok.Data;
-import net.iioss.memory.core.base.CommonMemory;
-import net.iioss.memory.core.base.MemorySupport;
-import net.iioss.memory.core.base.ProcessMemory;
+import net.iioss.memory.core.definition.CommonMemory;
+import net.iioss.memory.core.definition.MemorySupport;
+import net.iioss.memory.core.definition.ProcessMemory;
 import net.iioss.memory.core.bean.CacheObject;
 import net.iioss.memory.core.bean.NameSpace;
 import net.iioss.memory.core.bean.NullValue;
 import net.iioss.memory.core.config.Config;
-import net.iioss.memory.core.definition.MemoryLevel;
+import net.iioss.memory.core.constant.MemoryLevel;
 
 import java.io.Closeable;
 import java.util.*;

@@ -3,10 +3,8 @@ package net.iioss.memory.core.impl.ehcache;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.Data;
-import lombok.experimental.Accessors;
-import net.iioss.memory.core.base.ProcessMemory;
-import net.iioss.memory.core.base.ProcessMemoryListener;
+import net.iioss.memory.core.definition.ProcessMemory;
+import net.iioss.memory.core.definition.ProcessMemoryListener;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Ehcache;
@@ -15,7 +13,6 @@ import net.sf.ehcache.event.CacheEventListener;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 

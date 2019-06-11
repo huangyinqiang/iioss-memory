@@ -1,4 +1,4 @@
-package net.iioss.memory.core.definition;
+package net.iioss.memory.core.constant;
 
 import cn.hutool.core.util.ObjectUtil;
 

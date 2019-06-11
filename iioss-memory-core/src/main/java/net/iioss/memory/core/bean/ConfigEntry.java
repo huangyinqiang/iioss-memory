@@ -6,14 +6,14 @@ import cn.hutool.setting.Setting;
 import cn.hutool.setting.SettingUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import net.iioss.memory.core.base.WrapDefaultValue;
+import net.iioss.memory.core.definition.WrapDefaultValue;
 import net.iioss.memory.core.config.Config;
-import net.iioss.memory.core.definition.*;
+import net.iioss.memory.core.constant.*;
 import net.iioss.memory.core.exception.MemoryException;
 
 import java.util.Properties;
 
-import static net.iioss.memory.core.definition.NameDefinition.*;
+import static net.iioss.memory.core.constant.NameDefinition.*;
 
 /**
  * @author HuangYinQiang

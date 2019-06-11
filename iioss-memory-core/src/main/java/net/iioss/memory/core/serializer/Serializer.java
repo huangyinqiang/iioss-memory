@@ -1,7 +1,7 @@
 package net.iioss.memory.core.serializer;
 
 import cn.hutool.core.util.ClassUtil;
-import net.iioss.memory.core.definition.SerializerType;
+import net.iioss.memory.core.constant.SerializerType;
 import net.iioss.memory.core.exception.DeSerializerException;
 import net.iioss.memory.core.exception.SerializerException;
 

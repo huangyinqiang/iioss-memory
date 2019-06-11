@@ -1,26 +1,23 @@
 package net.iioss.memory.core.impl.ehcache;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.setting.Setting;
 import lombok.extern.slf4j.Slf4j;
-import net.iioss.memory.core.base.Memory;
-import net.iioss.memory.core.base.MemorySupport;
-import net.iioss.memory.core.base.ProcessMemoryListener;
+import net.iioss.memory.core.definition.Memory;
+import net.iioss.memory.core.definition.MemorySupport;
+import net.iioss.memory.core.definition.ProcessMemoryListener;
 import net.iioss.memory.core.bean.NameSpace;
-import net.iioss.memory.core.definition.MemoryLevel;
-import net.iioss.memory.core.definition.MemoryType;
-import net.iioss.memory.core.definition.NameDefinition;
+import net.iioss.memory.core.constant.MemoryLevel;
+import net.iioss.memory.core.constant.MemoryType;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.config.CacheConfiguration;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static net.iioss.memory.core.definition.NameDefinition.*;
+import static net.iioss.memory.core.constant.NameDefinition.*;
 
 /**
  * @author HuangYinQiang

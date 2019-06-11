@@ -4,7 +4,7 @@ import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.BaseRedisCommands;
 import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
-import net.iioss.memory.core.base.CommonMemory;
+import net.iioss.memory.core.definition.CommonMemory;
 import net.iioss.memory.core.exception.MemoryException;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 

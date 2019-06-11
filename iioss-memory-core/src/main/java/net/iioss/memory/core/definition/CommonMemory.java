@@ -1,4 +1,4 @@
-package net.iioss.memory.core.base;
+package net.iioss.memory.core.definition;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.collection.IterUtil;

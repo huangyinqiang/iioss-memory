@@ -15,8 +15,6 @@
  */
 package net.iioss.memory.core.impl.lettuce;
 
-import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.setting.Setting;
 import io.lettuce.core.AbstractRedisClient;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulConnection;
@@ -27,15 +25,14 @@ import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
 import io.lettuce.core.pubsub.api.sync.RedisPubSubCommands;
 import io.lettuce.core.support.ConnectionPoolSupport;
 import net.iioss.memory.core.MemoryAdmin;
-import net.iioss.memory.core.base.CommonMemory;
-import net.iioss.memory.core.base.Memory;
-import net.iioss.memory.core.base.MemorySupport;
-import net.iioss.memory.core.base.ProcessMemoryListener;
+import net.iioss.memory.core.definition.CommonMemory;
+import net.iioss.memory.core.definition.Memory;
+import net.iioss.memory.core.definition.MemorySupport;
+import net.iioss.memory.core.definition.ProcessMemoryListener;
 import net.iioss.memory.core.bean.NameSpace;
 import net.iioss.memory.core.cluster.Cluster;
-import net.iioss.memory.core.MemoryAdmin;
-import net.iioss.memory.core.definition.Command;
-import net.iioss.memory.core.definition.MemoryLevel;
+import net.iioss.memory.core.constant.Command;
+import net.iioss.memory.core.constant.MemoryLevel;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 

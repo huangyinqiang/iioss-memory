@@ -2,18 +2,14 @@ package net.iioss.memory.core;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Singleton;
-import cn.hutool.core.util.ClassLoaderUtil;
-import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
-import net.iioss.memory.core.base.*;
+import net.iioss.memory.core.definition.*;
 import net.iioss.memory.core.bean.ConfigEntry;
 import net.iioss.memory.core.bean.NameSpace;
 import net.iioss.memory.core.config.Config;
-import net.iioss.memory.core.definition.MemoryLevel;
-import net.iioss.memory.core.definition.Type;
-import net.iioss.memory.core.exception.MemoryException;
+import net.iioss.memory.core.constant.MemoryLevel;
+import net.iioss.memory.core.constant.Type;
 import net.iioss.memory.core.util.PropertiesUtil;
 import net.sf.ehcache.CacheException;
 

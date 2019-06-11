@@ -1,11 +1,11 @@
 package net.iioss.memory.core.impl;
 
-import net.iioss.memory.core.base.Memory;
-import net.iioss.memory.core.base.MemorySupport;
-import net.iioss.memory.core.base.ProcessMemoryListener;
+import net.iioss.memory.core.definition.Memory;
+import net.iioss.memory.core.definition.MemorySupport;
+import net.iioss.memory.core.definition.ProcessMemoryListener;
 import net.iioss.memory.core.bean.NameSpace;
-import net.iioss.memory.core.definition.MemoryLevel;
-import net.iioss.memory.core.definition.MemoryType;
+import net.iioss.memory.core.constant.MemoryLevel;
+import net.iioss.memory.core.constant.MemoryType;
 
 import java.util.Collection;
 import java.util.Properties;

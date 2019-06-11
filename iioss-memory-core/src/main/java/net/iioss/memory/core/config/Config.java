@@ -5,10 +5,10 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import net.iioss.memory.core.bean.ConfigEntry;
-import net.iioss.memory.core.definition.*;
+import net.iioss.memory.core.constant.*;
 import java.util.Map;
 
-import static net.iioss.memory.core.definition.NameDefinition.*;
+import static net.iioss.memory.core.constant.NameDefinition.*;
 
 /**
  * @author HuangYinQiang

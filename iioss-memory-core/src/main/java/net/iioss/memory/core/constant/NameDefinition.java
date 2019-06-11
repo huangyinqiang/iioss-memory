@@ -1,4 +1,4 @@
-package net.iioss.memory.core.definition;
+package net.iioss.memory.core.constant;
 
 /**
  * @author 常用名称的定义

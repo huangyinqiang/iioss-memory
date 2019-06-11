@@ -1,20 +1,16 @@
 package net.iioss.memory.core;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Singleton;
-import net.iioss.memory.core.base.CommonMemory;
-import net.iioss.memory.core.base.Memory;
+import net.iioss.memory.core.definition.CommonMemory;
 import net.iioss.memory.core.cluster.Cluster;
 import net.iioss.memory.core.cluster.ClusterFactory;
 import net.iioss.memory.core.config.Config;
-import net.iioss.memory.core.definition.MemoryType;
-import net.iioss.memory.core.definition.Type;
+import net.iioss.memory.core.constant.Type;
 import net.iioss.memory.core.serializer.SerializationAdapter;
 import net.iioss.memory.core.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 

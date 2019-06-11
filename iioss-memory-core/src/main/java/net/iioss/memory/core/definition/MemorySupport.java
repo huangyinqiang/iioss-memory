@@ -1,9 +1,8 @@
-package net.iioss.memory.core.base;
+package net.iioss.memory.core.definition;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.setting.Setting;
 import net.iioss.memory.core.bean.NameSpace;
-import net.iioss.memory.core.definition.MemoryLevel;
+import net.iioss.memory.core.constant.MemoryLevel;
 
 import java.util.Collection;
 import java.util.Properties;

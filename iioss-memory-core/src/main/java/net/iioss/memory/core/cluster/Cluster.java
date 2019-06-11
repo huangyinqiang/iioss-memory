@@ -2,13 +2,13 @@ package net.iioss.memory.core.cluster;
 
 import cn.hutool.core.bean.BeanUtil;
 import net.iioss.memory.core.MemoryAdmin;
-import net.iioss.memory.core.definition.Command;
+import net.iioss.memory.core.constant.Command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
-import static net.iioss.memory.core.definition.NameDefinition.*;
+import static net.iioss.memory.core.constant.NameDefinition.*;
 
 /**
  * @Title 集群基类

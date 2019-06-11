@@ -4,7 +4,7 @@ import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
-import net.iioss.memory.core.definition.SerializerType;
+import net.iioss.memory.core.constant.SerializerType;
 import net.iioss.memory.core.exception.DeSerializerException;
 import net.iioss.memory.core.exception.SerializerException;
 
