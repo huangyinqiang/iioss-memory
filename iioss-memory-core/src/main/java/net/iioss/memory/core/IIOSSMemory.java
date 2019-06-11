@@ -4,8 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import net.iioss.memory.core.bean.MemoryObject;
 import net.iioss.memory.core.config.Config;
 import net.iioss.memory.core.exception.MemoryException;
-
-import java.util.Map;
+import static net.iioss.memory.core.constant.NameDefinition.DEFAULT_NAMESPACE;
 
 /**
  * @author HuangYinQiang
@@ -20,6 +19,51 @@ public class IIOSSMemory {
      * 当前内存的操作频道
      */
     private static MemoryChannel builder;
+
+    /**
+     * 默认的名称空间
+     */
+    private static final String nameSpace=DEFAULT_NAMESPACE;
+
+
+    /**
+     * 获取缓存数据
+     * @param nameSpace　名称空间
+     * @param key　　　　　　key
+     * @return           内存数据
+     */
+    public static MemoryObject get(String nameSpace,String key)  {
+        return getChannel().get(nameSpace, key,true);
+    }
+
+    /**
+     * 获取缓存数据
+     * @param key　　　　　　key
+     * @return           内存数据
+     */
+    public static MemoryObject get(String key)  {
+        return getChannel().get(nameSpace, key,true);
+    }
+
+
+    /**
+     * 存储缓存数据
+     * @param nameSpace　名称空间
+     * @param key　　　　　　key
+     * @return           内存数据
+     */
+    public static void put(String nameSpace, String key,Object object)  {
+        getChannel().put(nameSpace, key,object,true);
+    }
+
+    /**
+     * 存储缓存数据
+     * @param key　　　　　　key
+     * @return           内存数据
+     */
+    public static void put(String key,Object object)  {
+        getChannel().put(nameSpace, key,object,true);
+    }
 
 
     /**
@@ -53,9 +97,8 @@ public class IIOSSMemory {
 
 
     public static void main(String[] args) {
-        MemoryChannel channel = IIOSSMemory.getChannel();
         String namespace = "Users";
-        channel.put(namespace, "name", "小明");
+        IIOSSMemory.put(namespace, "name", "小明3444");
 
         for (;;){
             try {
@@ -64,7 +107,7 @@ public class IIOSSMemory {
                 e.printStackTrace();
             }
 
-            MemoryObject ffff = channel.get(namespace, "name");
+            MemoryObject ffff = IIOSSMemory.get(namespace, "name");
             System.out.println(ffff);
         }
 

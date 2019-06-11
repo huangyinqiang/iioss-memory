@@ -32,19 +32,17 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-core</artifactId>
                 <version>${hutool.version}</version>
-                <optional>true</optional>
             </dependency>
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-setting</artifactId>
                 <version>${hutool.version}</version>
-                <optional>true</optional>
             </dependency>
             <dependency>
                 <groupId>net.sf.ehcache</groupId>
                 <artifactId>ehcache</artifactId>
                 <version>${ehcache.version}</version>
-            <!--    <scope>provided</scope>-->
+              <!--  <scope>provided</scope>-->
             </dependency>
             <dependency>
                 <groupId>io.lettuce</groupId>
@@ -73,6 +71,12 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
                 <version>${slf4j.version}</version>
                 <optional>true</optional>
             </dependency>

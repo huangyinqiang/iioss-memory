@@ -42,6 +42,7 @@ public class NameDefinition {
     public static final String CONFIGLOCATION="configLocation";
 
 
+    public final static String DEFAULT_NAMESPACE = PROJECT_NAME+"*-*-$-$-@-"+"default-nameSpace";
 
 
 
