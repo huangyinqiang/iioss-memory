@@ -4,6 +4,7 @@ package net.iioss.memory.core.cluster;
 import net.iioss.memory.core.MemoryAdmin;
 import net.iioss.memory.core.constant.Command;
 
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -15,7 +16,7 @@ public class NoneCluster implements Cluster {
     private int LOCAL_COMMAND_ID = Command.genRandomSrc();
 
     @Override
-    public void connect(Properties props, MemoryAdmin admin) {
+    public void connect(Map<String, String> configMap, MemoryAdmin admin) {
 
     }
 

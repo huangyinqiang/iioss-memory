@@ -5,6 +5,7 @@ import net.iioss.memory.core.bean.NameSpace;
 import net.iioss.memory.core.constant.MemoryLevel;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -68,9 +69,9 @@ public interface MemorySupport {
 
     /**
      * 开启当前的memory
-     * @param props 配置的setting
+     * @param configMap 配置的setting
      */
-    void start(Properties props);
+    void start(Map<String, String> configMap);
 
 
     /**

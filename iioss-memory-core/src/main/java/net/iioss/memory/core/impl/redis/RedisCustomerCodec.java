@@ -1,4 +1,4 @@
-package net.iioss.memory.core.impl.lettuce;
+package net.iioss.memory.core.impl.redis;
 
 import io.lettuce.core.codec.RedisCodec;
 
@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 /**
  * 使用字节编码
  */
-public class LettuceByteCodec implements RedisCodec<String, byte[]> {
+public class RedisCustomerCodec implements RedisCodec<String, byte[]> {
 
     private static final byte[] EMPTY = new byte[0];
 

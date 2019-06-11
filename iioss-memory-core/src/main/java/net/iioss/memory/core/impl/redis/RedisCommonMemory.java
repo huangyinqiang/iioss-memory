@@ -1,4 +1,4 @@
-package net.iioss.memory.core.impl.lettuce;
+package net.iioss.memory.core.impl.redis;
 
 import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.api.StatefulRedisConnection;
@@ -15,7 +15,7 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
  * @Description: redis
  * @date 2019/6/9 23:06
  */
-public abstract class LettuceCache implements CommonMemory {
+public abstract class RedisCommonMemory implements CommonMemory {
 
     protected String namespace;
     protected String region;

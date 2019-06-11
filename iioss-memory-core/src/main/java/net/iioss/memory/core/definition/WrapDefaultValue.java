@@ -14,5 +14,5 @@ public interface WrapDefaultValue {
     /**
      * 默认值
      */
-    void defaultValue(ConfigEntry wrap);
+    ConfigEntry defaultValue(ConfigEntry wrap);
 }

@@ -12,7 +12,7 @@ public enum MemoryType {
     /**
      * redis内存
      */
-    REDIS("redis","net.iioss.memory.core.impl.lettuce.LettuceCacheProvider"),
+    REDIS("redis","net.iioss.memory.core.impl.lettuce.RedisCommonMemorySupport"),
 
     /**
      * 客户端自定义内存

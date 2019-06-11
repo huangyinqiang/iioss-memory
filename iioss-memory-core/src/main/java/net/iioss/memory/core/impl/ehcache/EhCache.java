@@ -3,6 +3,10 @@ package net.iioss.memory.core.impl.ehcache;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import net.iioss.memory.core.definition.ProcessMemory;
 import net.iioss.memory.core.definition.ProcessMemoryListener;
 import net.sf.ehcache.Cache;
@@ -23,10 +27,14 @@ import java.util.Map;
  * @Description: ehcache实现进程内存操作
  * @date 2019/6/9 22:36
  */
+@Getter
+@Accessors(chain = true)
 public class EhCache implements ProcessMemory, CacheEventListener {
 
     private net.sf.ehcache.Cache cache;
+    @Setter
     private ProcessMemoryListener listener;
+
 
     public Cache getCache() {
         return cache;
@@ -35,15 +43,6 @@ public class EhCache implements ProcessMemory, CacheEventListener {
     public EhCache setCache(Cache cache) {
         this.cache = cache;
         this.cache.getCacheEventNotificationService().registerListener(this);
-        return this;
-    }
-
-    public ProcessMemoryListener getListener() {
-        return listener;
-    }
-
-    public EhCache setListener(ProcessMemoryListener listener) {
-        this.listener = listener;
         return this;
     }
 

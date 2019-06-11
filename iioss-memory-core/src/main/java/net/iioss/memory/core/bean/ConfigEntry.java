@@ -3,15 +3,14 @@ import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.Setting;
-import cn.hutool.setting.SettingUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import net.iioss.memory.core.definition.WrapDefaultValue;
-import net.iioss.memory.core.config.Config;
 import net.iioss.memory.core.constant.*;
 import net.iioss.memory.core.exception.MemoryException;
+import net.iioss.memory.core.util.SettingUtil;
 
-import java.util.Properties;
+import java.util.Map;
 
 import static net.iioss.memory.core.constant.NameDefinition.*;
 
@@ -24,7 +23,7 @@ import static net.iioss.memory.core.constant.NameDefinition.*;
  */
 @Data
 @Accessors(chain = true)
-public abstract class ConfigEntry {
+public class ConfigEntry {
     public static final String FILE_BASE=BASE_PRE+DELIMITER+MEMORY+DELIMITER;
 
     /**
@@ -58,20 +57,27 @@ public abstract class ConfigEntry {
      */
     private MemoryLevel memoryLevel;
 
+    /**
+     * 更多的配置
+     */
+    private Map<String, String> manyConfig;
 
     /**
      * 配置文件的key
      * @return 配置文件的key
      */
-    public abstract String getKey();
+    public String getKey(){
+        return type.getName();
+    }
+
 
     /**
      * 根据配置装配
      */
     public ConfigEntry configOfWrap() {
-        Setting setting = SettingUtil.get(Config.coreConfigFile);
-        Properties properties = Singleton.get(Properties.class);
+        Setting setting =  Singleton.get(Setting.class);
         String property = setting.get(FILE_BASE+getKey());
+        manyConfig= SettingUtil.getMapByPrefix(FILE_BASE+getKey());
         if (StrUtil.isNotEmpty(property)){
             property = StrUtil.trim(property);
             if (type==Type.BROADCAST){
@@ -109,13 +115,13 @@ public abstract class ConfigEntry {
         return this;
     }
 
+
     /**
      * 获取用户最终方案
-     * @return
+     * @return 最终方案
      */
     public static ConfigEntry init(ConfigEntry wrap, WrapDefaultValue defaultValue){
-        defaultValue.defaultValue(wrap);
-        return wrap.configOfWrap();
+        return defaultValue.defaultValue(wrap).configOfWrap();
     }
 
 }

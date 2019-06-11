@@ -1,29 +1,52 @@
 package net.iioss.memory.core;
 
-import cn.hutool.core.lang.Singleton;
+import cn.hutool.core.util.ObjectUtil;
 import net.iioss.memory.core.config.Config;
-import net.sf.ehcache.CacheException;
-
-import java.io.IOException;
-import java.util.Properties;
+import net.iioss.memory.core.exception.MemoryException;
 
 /**
  * @author HuangYinQiang
  * @version 1.0
  * @Package net.iioss.memory.core
- * @Description: 核心类
+ * @Description: 起始类，供外部使用
  * @date 2019/6/9 13:25
  */
 public class IIOSSMemory {
 
-    public static MemoryChannel getChannel(){
-        return MemoryBuilder.init(Singleton.get(Config.class)).getChannel();
-    }
+    /**
+     * 当前内存的操作频道
+     */
+    private static MemoryChannel builder;
+
 
     /**
-     * 关闭 J2Cache
+     * 获取当前内存操作的频道
+     * @return 当前操作频道
+     */
+    public static MemoryChannel getChannel(){
+        return ObjectUtil.isNull(builder)?
+                (builder=MemoryBuilder.init(Config.loadConfig()).getChannel()):builder;
+    }
+
+
+    /**
+     * 获取当前内存操作的频道
+     * @return 当前操作频道
+     */
+    public static MemoryChannel getChannel(String fileName){
+        return ObjectUtil.isNull(builder)?
+                (builder=MemoryBuilder.init(Config.loadConfig(fileName)).getChannel()):builder;
+    }
+
+
+    /**
+     * 关闭内存操作类
      */
     public static void close() {
-        MemoryBuilder.init(Singleton.get(Config.class)).close();
+        if (ObjectUtil.isNull(builder))
+            throw new MemoryException("尚未建立内存频道");
+        builder.close();
     }
+
+
 }

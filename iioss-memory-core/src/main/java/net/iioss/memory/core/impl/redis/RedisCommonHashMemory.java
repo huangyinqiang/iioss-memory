@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.iioss.memory.core.impl.lettuce;
+package net.iioss.memory.core.impl.redis;
 
 import cn.hutool.core.collection.CollectionUtil;
 import io.lettuce.core.api.StatefulConnection;
@@ -32,9 +32,9 @@ import java.util.stream.Collectors;
  *
  * 重要提示！！！  hash 存储模式无法单独对 key 设置 expire
  */
-public class LettuceHashCache extends LettuceCache {
+public class RedisCommonHashMemory extends RedisCommonMemory {
 
-    public LettuceHashCache(String namespace, String region, GenericObjectPool<StatefulConnection<String, byte[]>> pool) {
+    public RedisCommonHashMemory(String namespace, String region, GenericObjectPool<StatefulConnection<String, byte[]>> pool) {
         if (region == null || region.isEmpty())
             region = "_"; // 缺省region
 

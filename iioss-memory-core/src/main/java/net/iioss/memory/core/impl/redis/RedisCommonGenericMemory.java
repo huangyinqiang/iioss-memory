@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.iioss.memory.core.impl.lettuce;
+package net.iioss.memory.core.impl.redis;
 
 import cn.hutool.core.collection.CollectionUtil;
 import io.lettuce.core.api.StatefulConnection;
@@ -30,9 +30,9 @@ import java.util.stream.Collectors;
  * Redis 缓存操作封装，基于 region+_key 实现多个 Region 的缓存（
  * @author Winter Lau(javayou@gmail.com)
  */
-public class LettuceGenericCache extends LettuceCache {
+public class RedisCommonGenericMemory extends RedisCommonMemory {
 
-    public LettuceGenericCache(String namespace, String region, GenericObjectPool<StatefulConnection<String, byte[]>> pool) {
+    public RedisCommonGenericMemory(String namespace, String region, GenericObjectPool<StatefulConnection<String, byte[]>> pool) {
         if (region == null || region.isEmpty())
             region = "_"; // 缺省region
 

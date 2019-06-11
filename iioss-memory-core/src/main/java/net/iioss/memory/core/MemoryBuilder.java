@@ -1,16 +1,18 @@
 package net.iioss.memory.core;
 
 import cn.hutool.core.lang.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.iioss.memory.core.definition.CommonMemory;
 import net.iioss.memory.core.cluster.Cluster;
 import net.iioss.memory.core.cluster.ClusterFactory;
 import net.iioss.memory.core.config.Config;
 import net.iioss.memory.core.constant.Type;
 import net.iioss.memory.core.serializer.SerializationAdapter;
-import net.iioss.memory.core.util.PropertiesUtil;
+import net.iioss.memory.core.util.SettingUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -18,16 +20,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author HuangYinQiang
  * @version 1.0
  * @Package net.iioss.memory
- * @Description: TODO
+ * @Description: 内存操作构建者
  * @date 2019/6/6 6:02
  */
+@Slf4j
 public class MemoryBuilder {
-
-    private final static Logger log = LoggerFactory.getLogger(MemoryBuilder.class);
 
     private MemoryChannel channel;
     private MemoryAdmin admin;
-    private Cluster policy; //不同的广播策略
+    private Cluster policy;
     private AtomicBoolean opened = new AtomicBoolean(false);
     private Config config;
 
@@ -40,25 +41,23 @@ public class MemoryBuilder {
     }
 
     /**
-     * 返回缓存操作接口
-     *
-     * @return CacheChannel
+     * 获取频道
+     * @return MemoryChannel
      */
     public MemoryChannel getChannel() {
-        if (this.channel == null || !this.opened.get()) {
+        if (channel == null || !opened.get()) {
             synchronized (MemoryBuilder.class) {
-                if (this.channel == null || !this.opened.get()) {
-                    this.initFromConfig(config);
-                    /* 初始化缓存接口 */
-                    this.channel = new MemoryChannel() {
+                if (channel == null || !opened.get()) {
+                    parseConfig(config);
+                    channel = new MemoryChannel() {
                         @Override
-                        public void sendClearCmd(String region) {
-                            policy.sendClearCmd(region);
+                        public void sendClearCmd(String nameSpace) {
+                            policy.sendClearCmd(nameSpace);
                         }
 
                         @Override
-                        public void senddeleteCmd(String region, String... keys) {
-                            policy.sendDeleteCmd(region, keys);
+                        public void senddeleteCmd(String nameSpace, String... keys) {
+                            policy.sendDeleteCmd(nameSpace, keys);
                         }
 
                         @Override
@@ -69,11 +68,11 @@ public class MemoryBuilder {
                             opened.set(false);
                         }
                     };
-                    this.opened.set(true);
+                    opened.set(true);
                 }
             }
         }
-        return this.channel;
+        return channel;
     }
 
     /**
@@ -84,26 +83,27 @@ public class MemoryBuilder {
     }
 
     /**
-     * 加载配置
-     *
-     * @return
+     * 根据加载的config进行解析
+     * @param config　配置文件
      */
-    private void initFromConfig(Config config) {
+    private void parseConfig(Config config) {
+        //配置序列化方案
         SerializationAdapter.init(config.getFileConfig().get(Type.SERIALIZER).getName());
-        //初始化两级的缓存管理
-        this.admin = MemoryAdmin.init((region, key) -> {
-            //当一级缓存中的对象失效时，自动清除二级缓存中的数据
-            CommonMemory level2 = this.admin.getCommonMemory(region);
-            level2.delete(key);
-            this.admin.getProcessMemory(region).delete(key);
-            log.debug("Level 1 cache object expired, evict level 2 cache object [{},{}]", region, key);
+        //配置内存的管理器
+        admin = MemoryAdmin.init((nameSpace, key) -> {
+            CommonMemory common =admin.getCommonMemory(nameSpace);
+            common.delete(key);
+            if (!common.isSupportTimeToLiveSeconds()) {
+                admin.getProcessMemory(nameSpace).delete(key);
+            }
+            this.admin.getProcessMemory(nameSpace).delete(key);
+            log.debug("进程数据过期, 自动清除内存数据 [{},{}]", nameSpace, key);
             if (policy != null)
-                policy.sendDeleteCmd(region, key);
+                policy.sendDeleteCmd(nameSpace, key);
         });
-        Properties subProperties = PropertiesUtil.getSubProperties(config.getFileConfig().get(Type.BROADCAST).getName(), Singleton.get(Properties.class));
-
-        policy = ClusterFactory.init(admin, config.getFileConfig().get(Type.BROADCAST).getName(), subProperties);
-        log.info("使用集群模式 : {}", policy.getClass().getName());
+        policy = ClusterFactory.init(admin, config.getFileConfig().get(Type.BROADCAST).getName(),
+                SettingUtil.getMapByPrefix(config.getFileConfig().get(Type.BROADCAST).getName()));
+        log.info("使用集群模式:{}", policy.getClass().getName());
     }
 
 

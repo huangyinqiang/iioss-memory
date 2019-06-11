@@ -11,7 +11,6 @@ public enum BroadcastType {
 
     REDIS("redis",""),
 
-    CUSTOMER("customer",""),
 
     NONE("none","");
 

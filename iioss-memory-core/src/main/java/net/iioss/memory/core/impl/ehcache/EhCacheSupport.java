@@ -14,6 +14,7 @@ import net.sf.ehcache.config.CacheConfiguration;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -90,18 +91,18 @@ public class EhCacheSupport  implements MemorySupport {
     }
 
     @Override
-    public void start(Properties props) {
+    public void start(Map<String, String> configMap) {
         if (manager != null) {
             log.warn("正在重启EhCacheProvider");
             return;
         }
-        String ehcacheName = (String) props.get(NAME);
+        String ehcacheName = configMap.get(NAME);
         if (ehcacheName != null && ehcacheName.trim().length() > 0)
             manager = CacheManager.getCacheManager(ehcacheName);
         if (manager == null) {
             // 指定了配置文件路径? 加载之
-            if (props.containsKey(CONFIGLOCATION)) {
-                URL url = getClass().getClassLoader().getResource((String) props.get(CONFIGLOCATION));
+            if (configMap.containsKey(CONFIGLOCATION)) {
+                URL url = getClass().getClassLoader().getResource((String) configMap.get(CONFIGLOCATION));
                 manager = CacheManager.newInstance(url);
             } else {
                 // 加载默认实例

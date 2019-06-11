@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.iioss.memory.core.impl.lettuce;
+package net.iioss.memory.core.impl.redis;
 
+import cn.hutool.core.util.StrUtil;
 import io.lettuce.core.AbstractRedisClient;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulConnection;
@@ -39,8 +40,10 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Properties;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static net.iioss.memory.core.constant.NameDefinition.PROJECT_NAME;
 
 /**
  *  使用 Lettuce 进行 Redis 的操作
@@ -57,11 +60,11 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author Winter Lau (javayou@gmail.com)
  */
-public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> implements MemorySupport, Cluster {
+public class RedisCommonMemorySupport extends RedisPubSubAdapter<String, String> implements MemorySupport, Cluster {
 
     private int LOCAL_COMMAND_ID = Command.genRandomSrc(); //命令源标识，随机生成，每个节点都有唯一标识
 
-    private static final LettuceByteCodec codec = new LettuceByteCodec();
+    private static final RedisCustomerCodec codec = new RedisCustomerCodec();
 
     private static AbstractRedisClient redisClient;
     GenericObjectPool<StatefulConnection<String, byte[]>> pool;
@@ -91,16 +94,16 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
     }
 
     @Override
-    public void start(Properties props) {
-        this.namespace = props.getProperty("namespace");
-        this.storage = props.getProperty("storage", "hash");
-        this.channel = props.getProperty("channel", "j2cache");
+    public void start(Map<String, String> configMap) {
+        this.namespace = configMap.get("namespace");
+        this.storage = StrUtil.emptyToDefault(configMap.get("storage"),"hash");
+        this.channel = StrUtil.emptyToDefault(configMap.get("channel"),PROJECT_NAME);
 
-        String scheme = props.getProperty("scheme", "redis");
-        String hosts = props.getProperty("hosts", "127.0.0.1:6379");
-        String password = props.getProperty("password");
-        int database = Integer.parseInt(props.getProperty("database", "0"));
-        String sentinelMasterId = props.getProperty("sentinelMasterId");
+        String scheme = StrUtil.emptyToDefault(configMap.get("scheme"), "redis");
+        String hosts = StrUtil.emptyToDefault(configMap.get("hosts"), "127.0.0.1:6379");
+        String password = configMap.get("password");
+        int database = Integer.parseInt(StrUtil.emptyToDefault(configMap.get("database"), "0"));
+        String sentinelMasterId = configMap.get("sentinelMasterId");
 
         boolean isCluster = false;
         if("redis-cluster".equalsIgnoreCase(scheme)) {
@@ -112,7 +115,7 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
 
         redisClient = isCluster?RedisClusterClient.create(redis_url):RedisClient.create(redis_url);
         try {
-            int timeout = Integer.parseInt(props.getProperty("timeout", "10000"));
+            int timeout = Integer.parseInt(StrUtil.emptyToDefault(configMap.get("timeout"), "10000"));
             redisClient.setDefaultTimeout(Duration.ofMillis(timeout));
         }catch(Exception e){
             log.warn("Failed to set default timeout, using default 10000 milliseconds.", e);
@@ -120,9 +123,9 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
 
         //connection pool configurations
         GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
-        poolConfig.setMaxTotal(Integer.parseInt(props.getProperty("maxTotal", "100")));
-        poolConfig.setMaxIdle(Integer.parseInt(props.getProperty("maxIdle", "10")));
-        poolConfig.setMinIdle(Integer.parseInt(props.getProperty("minIdle", "10")));
+        poolConfig.setMaxTotal(Integer.parseInt(StrUtil.emptyToDefault(configMap.get("maxTotal"), "100")));
+        poolConfig.setMaxIdle(Integer.parseInt(StrUtil.emptyToDefault(configMap.get("maxIdle"), "10")));
+        poolConfig.setMinIdle(Integer.parseInt(StrUtil.emptyToDefault(configMap.get("minIdle"), "10")));
 
         pool = ConnectionPoolSupport.createGenericObjectPool(() -> {
             if(redisClient instanceof RedisClient)
@@ -143,8 +146,8 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
     @Override
     public Memory build(String namespace, ProcessMemoryListener listener) {
         return regions.computeIfAbsent(this.namespace + ":" + namespace, v -> "hash".equalsIgnoreCase(this.storage)?
-                new LettuceHashCache(this.namespace, namespace, pool):
-                new LettuceGenericCache(this.namespace, namespace, pool));
+                new RedisCommonHashMemory(this.namespace, namespace, pool):
+                new RedisCommonGenericMemory(this.namespace, namespace, pool));
     }
 
     @Override
@@ -189,10 +192,10 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
     }
 
     @Override
-    public void connect(Properties props, MemoryAdmin holder) {
+    public void connect(Map<String, String> configMap, MemoryAdmin holder) {
         long ct = System.currentTimeMillis();
         this.holder = holder;
-        this.channel = props.getProperty("channel", "j2cache");
+        this.channel = StrUtil.emptyToDefault(configMap.get("channel"),PROJECT_NAME);
         this.publish(Command.join());
 
         this.pubsub_subscriber = this.pubsub();

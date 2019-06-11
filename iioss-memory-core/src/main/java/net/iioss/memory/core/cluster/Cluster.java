@@ -6,6 +6,7 @@ import net.iioss.memory.core.constant.Command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
 import java.util.Properties;
 
 import static net.iioss.memory.core.constant.NameDefinition.*;
@@ -20,10 +21,10 @@ public interface Cluster{
 
     /**
      * 链接集群
-     * @param props　集群配置属性
+     * @param configMap　集群配置属性
      * @param admin　内存管理器
      */
-    void connect(Properties props, MemoryAdmin admin);
+    void connect(Map<String, String> configMap, MemoryAdmin admin);
 
 
     /**
