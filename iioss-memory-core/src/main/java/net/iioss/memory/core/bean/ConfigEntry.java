@@ -67,7 +67,7 @@ public class ConfigEntry {
      * @return 配置文件的key
      */
     public String getKey(){
-        return type.getName();
+        return FILE_BASE+type.getName();
     }
 
 
@@ -76,8 +76,8 @@ public class ConfigEntry {
      */
     public ConfigEntry configOfWrap() {
         Setting setting =  Singleton.get(Setting.class);
-        String property = setting.get(FILE_BASE+getKey());
-        manyConfig= SettingUtil.getMapByPrefix(FILE_BASE+getKey());
+        String property = setting.get(getKey());
+        manyConfig= SettingUtil.getMapByPrefix(getKey());
         if (StrUtil.isNotEmpty(property)){
             property = StrUtil.trim(property);
             if (type==Type.BROADCAST){

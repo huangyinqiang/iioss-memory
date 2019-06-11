@@ -55,9 +55,18 @@ public class IIOSSMemory {
     public static void main(String[] args) {
         MemoryChannel channel = IIOSSMemory.getChannel();
         String namespace = "Users";
-        channel.put(namespace, "name", "黄银强");
-        MemoryObject name1 = channel.get(namespace, "name");
-        System.out.println(name1);
+        channel.put(namespace, "name", "小明");
+
+        for (;;){
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            MemoryObject ffff = channel.get(namespace, "name");
+            System.out.println(ffff);
+        }
 
     }
 

@@ -51,14 +51,15 @@ public class MemoryAdmin {
         MemorySupport memorySupport = getMemorySupport(Type.PROCESS_MEMORY);
         memoryAdmin.support.put(Type.PROCESS_MEMORY,memorySupport);
         assert memorySupport != null;
-        memorySupport.start(SettingUtil.getMapByPrefix(config.getFileConfig().get(Type.PROCESS_MEMORY).getName()));
+        Map<String, String> mapByPrefix = SettingUtil.getMapByPrefix(config.getFileConfig().get(Type.PROCESS_MEMORY).getKey());
+        memorySupport.start(mapByPrefix);
         log.info("进程内存的提供者 : {}", memorySupport.getClass().getName());
 
         //进程外内存
         MemorySupport support =getMemorySupport(Type.COMMON_MEMORY);
         memoryAdmin.support.put(Type.COMMON_MEMORY,support);
         assert support != null;
-        support.start(SettingUtil.getMapByPrefix(config.getFileConfig().get(Type.PROCESS_MEMORY).getName()));
+        support.start(SettingUtil.getMapByPrefix(config.getFileConfig().get(Type.COMMON_MEMORY).getKey()));
         log.info("进程外内存的提供者 : {}", support.getClass().getName());
         return memoryAdmin;
     }

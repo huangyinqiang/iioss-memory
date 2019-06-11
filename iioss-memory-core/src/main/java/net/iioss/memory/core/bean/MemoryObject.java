@@ -44,5 +44,8 @@ public class MemoryObject {
     @Getter
     private Object value;
 
-
+    @Override
+    public String toString() {
+        return String.format("[%s,%s,%s]=>%s", nameSpace, key, type.getName(), getValue());
+    }
 }
