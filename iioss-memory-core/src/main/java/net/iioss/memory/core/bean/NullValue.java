@@ -8,4 +8,5 @@ import java.io.Serializable;
  * @create 2019-06-05 下午3:29
  */
 public class NullValue implements Serializable {
+
 }

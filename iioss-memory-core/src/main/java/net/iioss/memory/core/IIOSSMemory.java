@@ -33,8 +33,9 @@ public class IIOSSMemory {
      * @return           内存数据
      */
     public static MemoryObject get(String nameSpace,String key)  {
-        return getChannel().get(nameSpace, key,true);
+        return getChannel().get(nameSpace, key);
     }
+
 
     /**
      * 获取缓存数据
@@ -42,7 +43,7 @@ public class IIOSSMemory {
      * @return           内存数据
      */
     public static MemoryObject get(String key)  {
-        return getChannel().get(nameSpace, key,true);
+        return getChannel().get(nameSpace, key);
     }
 
 
@@ -53,7 +54,7 @@ public class IIOSSMemory {
      * @return           内存数据
      */
     public static void put(String nameSpace, String key,Object object)  {
-        getChannel().put(nameSpace, key,object,true);
+        getChannel().put(nameSpace, key,object);
     }
 
     /**
@@ -62,7 +63,7 @@ public class IIOSSMemory {
      * @return           内存数据
      */
     public static void put(String key,Object object)  {
-        getChannel().put(nameSpace, key,object,true);
+        getChannel().put(nameSpace, key,object);
     }
 
 
@@ -98,8 +99,23 @@ public class IIOSSMemory {
 
     public static void main(String[] args) {
         String namespace = "Users";
-        IIOSSMemory.put(namespace, "name", "小明3444");
 
+        MemoryObject name = IIOSSMemory.get(namespace, "name");
+        Object name1 = name.getValue();
+        IIOSSMemory.put(namespace, "name",null);
+
+        if (name1==null){
+            System.out.println("yes");
+        }
+
+        MemoryObject sss = IIOSSMemory.get(namespace, "name");
+        Object dddd = sss.getValue();
+
+        if (dddd==null){
+            System.out.println("yes");
+        }
+
+/*
         for (;;){
             try {
                 Thread.sleep(3000);
@@ -110,6 +126,7 @@ public class IIOSSMemory {
             MemoryObject ffff = IIOSSMemory.get(namespace, "name");
             System.out.println(ffff);
         }
+*/
 
     }
 

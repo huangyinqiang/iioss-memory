@@ -12,12 +12,10 @@ import net.iioss.memory.core.bean.MemoryObject;
 import net.iioss.memory.core.bean.NameSpace;
 import net.iioss.memory.core.bean.NullValue;
 import net.iioss.memory.core.config.Config;
-import net.iioss.memory.core.constant.MemoryLevel;
-
+import net.iioss.memory.core.exception.MemoryException;
 import java.io.Closeable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -29,11 +27,16 @@ import java.util.stream.Collectors;
  */
 @Data
 public abstract class MemoryChannel implements AutoCloseable,Closeable {
+    private static final String EXCEPTION_MESSAGE="不要瞎整，缓存通道已经关闭!!!!";
     private static final Map<String, Object> locks = new ConcurrentHashMap<>();
     private Config config;
     private MemoryAdmin admin;
     private boolean closed;
 
+
+    /**
+     * 构造
+     */
     public MemoryChannel() {
         this.config = Singleton.get(Config.class);
         this.admin =  Singleton.get(MemoryAdmin.class);
@@ -47,6 +50,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      */
     protected abstract void sendClearCmd(String nameSpace);
 
+
     /**
      * 发布删除命令
      * @param nameSpace　名称空间
@@ -55,8 +59,23 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
     protected abstract void senddeleteCmd(String nameSpace, String...keys);
 
 
+    /**
+     * 检测缓存通道是否已经关闭
+     */
+    public void checkMemoryChannel()  {
+        if(closed)
+            throw new MemoryException(EXCEPTION_MESSAGE);
+    }
+
+
+    /**
+     * 获取内存中的数据
+     * @param nameSpace　名称空间
+     * @param key　　　　　key
+     * @return 内存数据对象　
+     */
     public MemoryObject get(String nameSpace, String key)  {
-        return get(nameSpace, key,true);
+        return get(nameSpace, key,false);
     }
 
 
@@ -68,25 +87,22 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      * @return 内存数据对象　
      */
     public MemoryObject get(String nameSpace, String key, boolean isCanNull)  {
-        if(closed)
-            throw new IllegalStateException("内存操作类已经关闭");
-
+        checkMemoryChannel();
         MemoryObject memoryValue = new MemoryObject(nameSpace, key, Type.PROCESS_MEMORY,null)
                 .setValue(admin.getProcessMemory(nameSpace).get(key));
         //如果从进程内存中拿到数据直接返回
-        if(ObjectUtil.isNotNull(memoryValue.getValue()))
+        if(memoryValue.getValue()==null)
             return memoryValue;
 
         String lock_key = key + '%' + nameSpace;
         synchronized (locks.computeIfAbsent(lock_key, v -> new Object())) {
             memoryValue.setValue(admin.getProcessMemory(nameSpace).get(key));
-            if(ObjectUtil.isNotNull(memoryValue.getValue()))
+            if(memoryValue.getValue()!=null)
                 return memoryValue;
-
             try {
                 memoryValue.setType(Type.COMMON_MEMORY).setValue(admin.getCommonMemory(nameSpace).get(key));
                 //如果从进程外拿到数据，存入一份到进程内存中
-                if (ObjectUtil.isNotNull(memoryValue.getValue())) {
+                if (memoryValue.getValue()!=null) {
                     admin.getProcessMemory(nameSpace).put(key, memoryValue.getValue());
                 }else {
                     if (isCanNull)
@@ -101,8 +117,6 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
     }
 
 
-
-
     /**
      *批量获取内存中的数据
      * @param nameSpace　名称空间
@@ -110,9 +124,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      * @return 内存数据对象集合　
      */
     public Map<String, MemoryObject> get(String nameSpace, Collection<String> keys)  {
-        if(closed)
-            throw new IllegalStateException("内存操作类已经关闭");
-
+        checkMemoryChannel();
         //进程内存数据
         final Map<String, Object> objectMap = admin.getProcessMemory(nameSpace).get((String[]) keys.toArray());
         Map<String, MemoryObject> results = objectMap.entrySet().stream().filter(p -> p.getValue() != null).collect(
@@ -152,9 +164,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      * @return 类型　
      */
     public Type getType(String nameSpace, String key) {
-        if(closed)
-            throw new IllegalStateException("缓存通道已经关闭");
-
+        checkMemoryChannel();
         if(admin.getProcessMemory(nameSpace).isExist(key))
             return Type.PROCESS_MEMORY;
         if(admin.getCommonMemory(nameSpace).isExist(key))
@@ -181,8 +191,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      * @param isCanNull　是否可以为null
      */
     public void put(String nameSpace, String key, Object value, boolean isCanNull) {
-        if(closed)
-            throw new IllegalStateException("缓存频道已经关闭");
+        checkMemoryChannel();
         if (!isCanNull && value == null)
             return ;
         try {
@@ -215,8 +224,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      * @param isCanNull　是否可以为null
      */
     public void put(String nameSpace, String key, Object value, long timeToLiveInSeconds, boolean isCanNull) {
-        if(closed)
-            throw new IllegalStateException("缓存通道已经关闭");
+        checkMemoryChannel();
         if (!isCanNull && value == null)
             return ;
         if(timeToLiveInSeconds <= 0)
@@ -243,9 +251,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      * @param isCanNull　是否可以为null
      */
     public void put(String nameSpace, Map<String, Object> values, boolean isCanNull)  {
-        if(closed)
-            throw new IllegalStateException("缓存频道已经关闭");
-
+        checkMemoryChannel();
         try {
             if (isCanNull && values.containsValue(null)) {
                 Map<String, Object> objectMap = CollectionUtil.newHashMap();
@@ -285,8 +291,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      * @param timeToLiveInSeconds　生命周期
      */
     public void put(String nameSpace, Map<String, Object> values, long timeToLiveInSeconds, boolean isCanNull)  {
-        if(closed)
-            throw new IllegalStateException("内存通道已经关闭");
+        checkMemoryChannel();
 
         if(timeToLiveInSeconds <= 0)
             put(nameSpace, values, isCanNull);
@@ -318,8 +323,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      * @param keys　　　　　keys
      */
     public void delete(String nameSpace, String...keys)  {
-        if(closed)
-            throw new IllegalStateException("内存通道已经关闭");
+        checkMemoryChannel();
         try {
             admin.getCommonMemory(nameSpace).delete(keys);
             admin.getProcessMemory(nameSpace).delete(keys);
@@ -334,8 +338,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      * @param nameSpace　名称空间
      */
     public void clear(String nameSpace)  {
-        if(closed)
-            throw new IllegalStateException("内存通道已经关闭");
+        checkMemoryChannel();
 
         try {
             admin.getCommonMemory(nameSpace).clear();
@@ -351,8 +354,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      * @return 所有的名称空间
      */
     public Collection<NameSpace> getNameSpaces() {
-        if(closed)
-            throw new IllegalStateException("内存通道已经关闭");
+        checkMemoryChannel();
         return admin.getNameSpaces();
     }
 
@@ -362,8 +364,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      * @param nameSpace　名称空间
      */
     public void removeRegion(String nameSpace) {
-        if(closed)
-            throw new IllegalStateException("内存通道已经关闭");
+        checkMemoryChannel();
         admin.getProcessMemorySupport().removeCache(nameSpace);
     }
 
@@ -374,8 +375,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      * @return
      */
     public Collection<String> keys(String nameSpace)  {
-        if(closed)
-            throw new IllegalStateException("内存通道已经关闭");
+        checkMemoryChannel();
         Set<String> keys = CollectionUtil.newHashSet();
         keys.addAll(admin.getProcessMemory(nameSpace).getKeys());
         keys.addAll(admin.getCommonMemory(nameSpace).getKeys());
