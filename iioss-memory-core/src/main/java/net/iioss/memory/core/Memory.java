@@ -15,7 +15,7 @@ import static net.iioss.memory.core.constant.NameDefinition.DEFAULT_NAMESPACE;
  * @date 2019/6/9 13:25
  */
 @Slf4j
-public class IIOSSMemory {
+public class Memory {
 
     /**
      * 当前内存的操作频道
@@ -103,10 +103,10 @@ public class IIOSSMemory {
         log.info("已经开始启动");
         String namespace = "Users";
 
-        MemoryObject ddd = IIOSSMemory.get(namespace, "ed");
+        MemoryObject ddd = Memory.get(namespace, "ed");
         System.out.println("ddd       "+ddd);
-        IIOSSMemory.put(namespace, "ed","44444444444444444444444444");
-        MemoryObject fff = IIOSSMemory.get(namespace, "ed");
+        Memory.put(namespace, "ed","44444444444444444444444444");
+        MemoryObject fff = Memory.get(namespace, "ed");
 
         System.out.println("fff       "+fff);
 
@@ -119,9 +119,9 @@ public class IIOSSMemory {
                 e.printStackTrace();
             }
 
-            MemoryObject ddd2 = IIOSSMemory.get(namespace, "ed");
+            MemoryObject ddd2 = Memory.get(namespace, "ed");
             System.out.println("ddd2       "+ddd2);
-            MemoryObject fff2 = IIOSSMemory.get(namespace, "ed");
+            MemoryObject fff2 = Memory.get(namespace, "ed");
 
             System.out.println("fff2       "+fff2);
         }

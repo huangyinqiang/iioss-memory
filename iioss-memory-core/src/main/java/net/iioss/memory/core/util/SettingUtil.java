@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.setting.Setting;
+import lombok.extern.slf4j.Slf4j;
 import net.iioss.memory.core.config.Config;
 
 import java.util.HashMap;
@@ -20,8 +21,18 @@ import static net.iioss.memory.core.constant.NameDefinition.DELIMITER;
  * @Description: Setting工具类
  * @date 2019/6/6 4:42
  */
+@Slf4j
 public class SettingUtil extends cn.hutool.setting.SettingUtil{
 
+
+    public static Setting get(String name) {
+        try {
+            return cn.hutool.setting.SettingUtil.get(name);
+        }catch (Exception e){
+            log.warn("没有配置核心配置文件，按照默认值方案既定运行！");
+            return new Setting();
+        }
+    }
 
     /**
      * 根据前缀获取Setting里面的信息

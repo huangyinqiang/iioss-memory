@@ -86,7 +86,7 @@ public class RedisCommonMemorySupport extends RedisPubSubAdapter<String, String>
         //redis集群方式
         String scheme = StrUtil.emptyToDefault(configMap.get("scheme"), "redis");
         String hosts = StrUtil.emptyToDefault(configMap.get("hosts"),"127.0.0.1:6379");
-        String password = configMap.get("password");
+        String password =StrUtil.emptyToDefault(configMap.get("password"), "iioss99!");
         int database = Integer.parseInt(StrUtil.emptyToDefault(configMap.get("database"), "0"));
         String sentinelMasterId = configMap.get("sentinelMasterId");
 
