@@ -103,9 +103,12 @@ public class IIOSSMemory {
         log.info("已经开始启动");
         String namespace = "Users";
 
-        IIOSSMemory.put(namespace, "name","568");
+        MemoryObject ddd = IIOSSMemory.get(namespace, "ed");
+        System.out.println("ddd       "+ddd);
+        IIOSSMemory.put(namespace, "ed","44444444444444444444444444");
+        MemoryObject fff = IIOSSMemory.get(namespace, "ed");
 
-
+        System.out.println("fff       "+fff);
 
 
 
@@ -116,9 +119,14 @@ public class IIOSSMemory {
                 e.printStackTrace();
             }
 
-            MemoryObject ffff = IIOSSMemory.get(namespace, "name");
-            System.out.println(ffff);
+            MemoryObject ddd2 = IIOSSMemory.get(namespace, "ed");
+            System.out.println("ddd2       "+ddd2);
+            MemoryObject fff2 = IIOSSMemory.get(namespace, "ed");
+
+            System.out.println("fff2       "+fff2);
         }
+
+
 
     }
 

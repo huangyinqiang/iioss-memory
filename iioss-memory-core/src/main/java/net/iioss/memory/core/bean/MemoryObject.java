@@ -41,19 +41,9 @@ public class MemoryObject {
     /**
      * 内存数据
      */
-
+    @Getter
     private Object value;
 
-
-    public Object getValue() {
-        if (value == null || value.getClass().equals(NullValue.class) || value.getClass().equals(Object.class))
-            return null;
-        return value;
-    }
-
-    public Object getRealValue() {
-        return value;
-    }
 
     @Override
     public String toString() {
