@@ -47,19 +47,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static net.iioss.memory.core.constant.NameDefinition.PROJECT_NAME;
 
 /**
- *  使用 Lettuce 进行 Redis 的操作
- *
- *  配置信息：
- *
- *  lettuce.namespace =
- *  lettuce.storage = generic
- *  lettuce.scheme = redis|rediss|redis-sentinel
- *  lettuce.hosts = 127.0.0.1:6379
- *  lettuce.password =
- *  lettuce.database = 0
- *  lettuce.sentinelMasterId =
- *
- * @author Winter Lau (javayou@gmail.com)
+ *  redis支撑
  */
 public class RedisCommonMemorySupport extends RedisPubSubAdapter<String, String> implements MemorySupport, Cluster {
 

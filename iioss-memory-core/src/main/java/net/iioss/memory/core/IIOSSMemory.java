@@ -1,6 +1,7 @@
 package net.iioss.memory.core;
 
 import cn.hutool.core.util.ObjectUtil;
+import lombok.extern.slf4j.Slf4j;
 import net.iioss.memory.core.bean.MemoryObject;
 import net.iioss.memory.core.config.Config;
 import net.iioss.memory.core.exception.MemoryException;
@@ -13,6 +14,7 @@ import static net.iioss.memory.core.constant.NameDefinition.DEFAULT_NAMESPACE;
  * @Description: 起始类，供外部使用
  * @date 2019/6/9 13:25
  */
+@Slf4j
 public class IIOSSMemory {
 
     /**
@@ -98,24 +100,15 @@ public class IIOSSMemory {
 
 
     public static void main(String[] args) {
+        log.info("已经开始启动");
         String namespace = "Users";
 
-        MemoryObject name = IIOSSMemory.get(namespace, "name");
-        Object name1 = name.getValue();
-        IIOSSMemory.put(namespace, "name",null);
+        IIOSSMemory.put(namespace, "name","568");
 
-        if (name1==null){
-            System.out.println("yes");
-        }
 
-        MemoryObject sss = IIOSSMemory.get(namespace, "name");
-        Object dddd = sss.getValue();
 
-        if (dddd==null){
-            System.out.println("yes");
-        }
 
-/*
+
         for (;;){
             try {
                 Thread.sleep(3000);
@@ -126,7 +119,6 @@ public class IIOSSMemory {
             MemoryObject ffff = IIOSSMemory.get(namespace, "name");
             System.out.println(ffff);
         }
-*/
 
     }
 

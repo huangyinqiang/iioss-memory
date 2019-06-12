@@ -34,9 +34,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
     private boolean closed;
 
 
-    /**
-     * 构造
-     */
+
     public MemoryChannel() {
         this.config = Singleton.get(Config.class);
         this.admin =  Singleton.get(MemoryAdmin.class);
@@ -49,7 +47,6 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      * @param nameSpace　名称空间
      */
     protected abstract void sendClearCmd(String nameSpace);
-
 
     /**
      * 发布删除命令
@@ -75,7 +72,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
      * @return 内存数据对象　
      */
     public MemoryObject get(String nameSpace, String key)  {
-        return get(nameSpace, key,false);
+        return get(nameSpace, key,true);
     }
 
 
@@ -91,18 +88,19 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
         MemoryObject memoryValue = new MemoryObject(nameSpace, key, Type.PROCESS_MEMORY,null)
                 .setValue(admin.getProcessMemory(nameSpace).get(key));
         //如果从进程内存中拿到数据直接返回
-        if(memoryValue.getValue()==null)
+        if(ObjectUtil.isNotNull(memoryValue.getValue()))
             return memoryValue;
 
         String lock_key = key + '%' + nameSpace;
         synchronized (locks.computeIfAbsent(lock_key, v -> new Object())) {
             memoryValue.setValue(admin.getProcessMemory(nameSpace).get(key));
-            if(memoryValue.getValue()!=null)
+            if(ObjectUtil.isNotNull(memoryValue.getValue()))
                 return memoryValue;
+
             try {
                 memoryValue.setType(Type.COMMON_MEMORY).setValue(admin.getCommonMemory(nameSpace).get(key));
                 //如果从进程外拿到数据，存入一份到进程内存中
-                if (memoryValue.getValue()!=null) {
+                if (ObjectUtil.isNotNull(memoryValue.getValue())) {
                     admin.getProcessMemory(nameSpace).put(key, memoryValue.getValue());
                 }else {
                     if (isCanNull)
@@ -115,6 +113,8 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
 
         return memoryValue;
     }
+
+
 
 
     /**
