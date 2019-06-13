@@ -13,6 +13,12 @@ import static net.iioss.memory.core.constant.NameDefinition.DEFAULT_NAMESPACE;
  * @Package net.iioss.memory.core
  * @Description: 起始类，供外部使用
  * @date 2019/6/9 13:25
+ *
+ * redis清空缓存指令：
+ * １.del iioss-cache:你的空间名称
+ * 2. publish iioss-memory '{"keys":[],"operator":3,"region":"Users"}'
+ *
+ *
  */
 @Slf4j
 public class Memory {
@@ -102,12 +108,7 @@ public class Memory {
         getChannel().clear(nameSpace);
     }
 
-    /**
-     * 清空内存所有的缓存数据
-     */
-    public static void clearAll()  {
-        getChannel().clearAll();
-    }
+
 
 
 
@@ -146,8 +147,10 @@ public class Memory {
         String namespace = "Users";
 
 
-        Memory.put(namespace, "ed","ddd");
+        Memory.put(namespace, "ed","8888");
+        Memory.put(namespace, "ed","ffff");
 
+        //Memory.clear(namespace);
 
 
 
