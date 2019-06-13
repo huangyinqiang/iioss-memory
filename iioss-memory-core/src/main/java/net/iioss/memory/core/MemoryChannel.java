@@ -103,8 +103,8 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
                 if (ObjectUtil.isNotNull(memoryValue.getValue())) {
                     admin.getProcessMemory(nameSpace).put(key, memoryValue.getValue());
                 }else {
-                    if (isCanNull)
-                        put(nameSpace, key, new NullValue(), true);
+                    /*if (isCanNull)
+                        put(nameSpace, key, new NullValue(), true);*/
                 }
             } finally {
                 locks.remove(lock_key);

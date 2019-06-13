@@ -48,7 +48,7 @@ public class EhCache implements ProcessMemory, CacheEventListener {
 
     @Override
     public long getTimeToLiveSeconds() {
-        return cache.getCacheConfiguration().getTimeToIdleSeconds();
+        return cache.getCacheConfiguration().getTimeToLiveSeconds();
     }
 
     @Override
