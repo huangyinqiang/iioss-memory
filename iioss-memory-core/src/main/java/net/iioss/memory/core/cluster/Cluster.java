@@ -92,18 +92,18 @@ public interface Cluster{
                 return;
             switch (cmd.getOperator()) {
                 case Command.OPT_JOIN:
-                    log.info("加入节点  -> {}", cmd.getSrc());
+                    log.warn("加入节点  -> {}", cmd.getSrc());
                     break;
                 case Command.OPT_EVICT_KEY:
                     this.delete(cmd.getRegion(), cmd.getKeys());
-                    log.debug("删除指令, nameSpace={}  key={}",cmd.getRegion(),String.join(DELIMITER, cmd.getKeys()));
+                    log.warn("删除指令, nameSpace={}  key={}",cmd.getRegion(),String.join(DELIMITER, cmd.getKeys()));
                     break;
                 case Command.OPT_CLEAR_KEY:
                     this.clear(cmd.getRegion());
-                    log.debug("清空指令, nameSpace={}",cmd.getRegion());
+                    log.warn("清空指令, nameSpace={}",cmd.getRegion());
                     break;
                 case Command.OPT_QUIT:
-                    log.info("退出节点  -> {}", cmd.getSrc());
+                    log.warn("退出节点  -> {}", cmd.getSrc());
                     break;
                 default:
                     log.warn("未知命令 = " + cmd.getOperator());
