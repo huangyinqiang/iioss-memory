@@ -4,7 +4,7 @@
 
 	<cacheManagerEventListenerFactory class="" properties=""/>
     <defaultCache
-        maxElementsInMemory="1000"
+        maxElementsInMemory="2000"
         eternal="false"
         timeToLiveSeconds="1800"
         overflowToDisk="true">
