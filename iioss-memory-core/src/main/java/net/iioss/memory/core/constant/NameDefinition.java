@@ -42,10 +42,13 @@ public class NameDefinition {
     public static final String CONFIGLOCATION="configLocation";
 
 
-    public final static String DEFAULT_NAMESPACE = PROJECT_NAME+"*-*-$-$-@-"+"default-nameSpace";
+    public final static String DEFAULT_NAMESPACE = PROJECT_NAME+"-default-nameSpace";
 
 
 
     public final static String NAME = "name";
+
+
+    public final static String CACHE_PRE = "iioss-cache:";
 
 }

@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import static net.iioss.memory.core.constant.NameDefinition.CACHE_PRE;
+
 /**
  * @author HuangYinQiang
  * @version 1.0
@@ -163,6 +165,7 @@ public class MemoryAdmin {
      * @return 内存实体
      */
     public CommonMemory getCommonMemory(String nameSpace,Long timeToLiveSeconds) {
+        nameSpace=CACHE_PRE+nameSpace;
         MemorySupport memorySupport = support.get(Type.COMMON_MEMORY);
         CommonMemory memory=null;
         if (ObjectUtil.isNull(timeToLiveSeconds)){

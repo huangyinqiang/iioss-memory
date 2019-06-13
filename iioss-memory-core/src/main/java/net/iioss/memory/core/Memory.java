@@ -70,6 +70,48 @@ public class Memory {
 
 
     /**
+     * 删除　内存数据
+     * @param keys　主键
+     */
+    public static void del(String ... keys)  {
+        getChannel().delete(nameSpace,keys);
+    }
+
+    /**
+     * 删除数据
+     * @param nameSpace　名称空间
+     * @param keys　　　主键
+     */
+    public static void del(String nameSpace,String ... keys)  {
+        getChannel().delete(nameSpace,keys);
+    }
+
+
+    /**
+     * 清空缓存
+     * @param nameSpace　名称空间
+     */
+    public static void clear(String nameSpace)  {
+        getChannel().clear(nameSpace);
+    }
+
+    /**
+     * 清空默认缓存
+     */
+    public static void clear()  {
+        getChannel().clear(nameSpace);
+    }
+
+    /**
+     * 清空内存所有的缓存数据
+     */
+    public static void clearAll()  {
+        getChannel().clearAll();
+    }
+
+
+
+    /**
      * 获取当前内存操作的频道
      * @return 当前操作频道
      */
@@ -103,12 +145,11 @@ public class Memory {
         log.info("已经开始启动");
         String namespace = "Users";
 
-        MemoryObject ddd = Memory.get(namespace, "ed");
-        System.out.println("ddd       "+ddd);
-        Memory.put(namespace, "ed","44444444444444444444444444");
-        MemoryObject fff = Memory.get(namespace, "ed");
 
-        System.out.println("fff       "+fff);
+        Memory.put(namespace, "ed","dfsfdfffsfd");
+
+
+
 
 
 
@@ -119,8 +160,7 @@ public class Memory {
                 e.printStackTrace();
             }
 
-            MemoryObject ddd2 = Memory.get(namespace, "ed");
-            System.out.println("ddd2       "+ddd2);
+
             MemoryObject fff2 = Memory.get(namespace, "ed");
 
             System.out.println("fff2       "+fff2);

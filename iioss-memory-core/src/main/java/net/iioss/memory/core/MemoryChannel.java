@@ -198,7 +198,8 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
             ProcessMemory processMemory = admin.getProcessMemory(nameSpace);
             processMemory.put(key, (value==null && isCanNull)?new NullValue():value);
             CommonMemory cMemory = admin.getCommonMemory(nameSpace);
-            cMemory.put(key,(value==null && isCanNull)?new NullValue():value, processMemory.getTimeToLiveSeconds());
+            long timeToLiveSeconds = processMemory.getTimeToLiveSeconds();
+            cMemory.put(key,(value==null && isCanNull)?new NullValue():value, timeToLiveSeconds);
         } finally {
             this.senddeleteCmd(nameSpace, key);
         }
@@ -347,6 +348,23 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
             this.sendClearCmd(nameSpace);
         }
     }
+
+
+    /**
+     * 清空所有的内存数据
+     */
+    public void clearAll(){
+        checkMemoryChannel();
+        getNameSpaces().forEach(e->{
+            try {
+                admin.getCommonMemory(e.getName()).clear();
+                admin.getProcessMemory(e.getName()).clear();
+            }finally {
+                this.sendClearCmd(e.getName());
+            }
+        });
+    }
+
 
 
     /**
