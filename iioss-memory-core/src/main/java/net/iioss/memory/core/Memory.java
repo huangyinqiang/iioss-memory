@@ -18,19 +18,13 @@ import static net.iioss.memory.core.constant.NameDefinition.DEFAULT_NAMESPACE;
  * １.del iioss-cache:你的空间名称
  * 2. publish iioss-memory '{"keys":[],"operator":3,"region":"Users"}'
  *
- *
  */
 @Slf4j
 public class Memory {
 
-    /**
-     * 当前内存的操作频道
-     */
-    private static MemoryChannel builder;
-
-    /**
-     * 默认的名称空间
-     */
+    /*缓存提供者*/
+    private static MemoryProvider provider;
+    /*默认的名称空间*/
     private static final String nameSpace=DEFAULT_NAMESPACE;
 
 
@@ -116,9 +110,9 @@ public class Memory {
      * 获取当前内存操作的频道
      * @return 当前操作频道
      */
-    public static MemoryChannel getChannel(){
-        return ObjectUtil.isNull(builder)?
-                (builder=MemoryBuilder.init(Config.loadConfig()).getChannel()):builder;
+    public static MemoryProvider getChannel(){
+        return ObjectUtil.isNull(provider)?
+                (provider=MemoryBuilder.init(Config.loadConfig()).getChannel()):provider;
     }
 
 
@@ -126,9 +120,9 @@ public class Memory {
      * 获取当前内存操作的频道
      * @return 当前操作频道
      */
-    public static MemoryChannel getChannel(String fileName){
-        return ObjectUtil.isNull(builder)?
-                (builder=MemoryBuilder.init(Config.loadConfig(fileName)).getChannel()):builder;
+    public static MemoryProvider getChannel(String fileName){
+        return ObjectUtil.isNull(provider)?
+                (provider=MemoryBuilder.init(Config.loadConfig(fileName)).getChannel()):provider;
     }
 
 
@@ -136,10 +130,25 @@ public class Memory {
      * 关闭内存操作类
      */
     public static void close() {
-        if (ObjectUtil.isNull(builder))
+        if (ObjectUtil.isNull(provider))
             throw new MemoryException("尚未建立内存频道");
-        builder.close();
+        provider.close();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public static void main(String[] args) {

@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
  * @author HuangYinQiang
  * @version 1.0
  * @Package net.iioss.memory
- * @Description: 内存频道
+ * @Description: 内存操作的提供者
  * @date 2019/6/6 3:27
  */
 @Data
-public abstract class MemoryChannel implements AutoCloseable,Closeable {
+public abstract class MemoryProvider implements AutoCloseable,Closeable {
     private static final String EXCEPTION_MESSAGE="不要瞎整，缓存通道已经关闭!!!!";
     private static final Map<String, Object> locks = new ConcurrentHashMap<>();
     private Config config;
@@ -35,7 +35,7 @@ public abstract class MemoryChannel implements AutoCloseable,Closeable {
 
 
 
-    public MemoryChannel() {
+    public MemoryProvider() {
         this.config = Singleton.get(Config.class);
         this.admin =  Singleton.get(MemoryAdmin.class);
         this.closed = false;

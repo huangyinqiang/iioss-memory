@@ -1,6 +1,5 @@
 package net.iioss.memory.core;
 
-import cn.hutool.core.lang.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.iioss.memory.core.definition.CommonMemory;
 import net.iioss.memory.core.cluster.Cluster;
@@ -9,11 +8,7 @@ import net.iioss.memory.core.config.Config;
 import net.iioss.memory.core.constant.Type;
 import net.iioss.memory.core.serializer.SerializationAdapter;
 import net.iioss.memory.core.util.SettingUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -26,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Slf4j
 public class MemoryBuilder {
 
-    private MemoryChannel channel;
+    private MemoryProvider channel;
     private MemoryAdmin admin;
     private Cluster policy;
     private AtomicBoolean opened = new AtomicBoolean(false);
@@ -42,14 +37,14 @@ public class MemoryBuilder {
 
     /**
      * 获取频道
-     * @return MemoryChannel
+     * @return MemoryProvider
      */
-    public MemoryChannel getChannel() {
+    public MemoryProvider getChannel() {
         if (channel == null || !opened.get()) {
             synchronized (MemoryBuilder.class) {
                 if (channel == null || !opened.get()) {
                     parseConfig(config);
-                    channel = new MemoryChannel() {
+                    channel = new MemoryProvider() {
                         @Override
                         public void sendClearCmd(String nameSpace) {
                             policy.sendClearCmd(nameSpace);

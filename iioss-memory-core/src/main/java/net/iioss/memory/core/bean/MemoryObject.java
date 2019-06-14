@@ -12,8 +12,7 @@ import net.iioss.memory.core.constant.Type;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-@Setter
+@Data
 @Accessors(chain = true)
 public class MemoryObject {
 
@@ -21,27 +20,23 @@ public class MemoryObject {
      * 内存的名称空间
      */
     @NonNull
-    @Getter
     private String nameSpace;
 
     /**
      * 内存的key
      */
     @NonNull
-    @Getter
     private String key;
 
     /**
      * 内存类型
      */
     @NonNull
-    @Getter
     private Type type;
 
     /**
      * 内存数据
      */
-    @Getter
     private Object value;
 
 
