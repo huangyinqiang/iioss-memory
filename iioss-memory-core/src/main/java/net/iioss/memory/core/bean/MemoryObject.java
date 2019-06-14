@@ -45,6 +45,15 @@ public class MemoryObject {
     private Object value;
 
 
+    /**
+     * 获取包装类
+     * @return
+     */
+    public Object getWrapValue(){
+        return value instanceof NullValue?null:value;
+    }
+
+
     @Override
     public String toString() {
         return String.format("[%s,%s,%s]=>%s", nameSpace, key, type.getName(), getValue());
